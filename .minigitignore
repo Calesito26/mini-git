@@ -1,0 +1,9 @@
+# Archivos generados
+*.exe
+*.log
+
+# Carpetas de build o dependencias
+bin/
+dist/
+target/
+node_modules/

@@ -173,6 +173,12 @@ Revisa los cambios:
 minigit status
 ```
 
+Mira las diferencias antes de volver a agregar el archivo:
+
+```powershell
+minigit diff archivo.txt
+```
+
 Guarda una nueva version:
 
 ```powershell
@@ -193,6 +199,7 @@ minigit init
 minigit add <archivo|carpeta> [...]
 minigit commit -m "mensaje"
 minigit status
+minigit diff [archivo]
 minigit log
 minigit checkout <commit-id>
 ```
@@ -204,8 +211,11 @@ mini-git/
 |-- cmd/
 |   `-- minigit/
 |       `-- main.go
+|-- scripts/
+|   `-- install-windows.ps1
 |-- go.mod
 |-- README.md
+|-- .minigitignore
 `-- .gitignore
 ```
 
@@ -236,6 +246,27 @@ Significado:
 - `.minigit/commits`: guarda los commits como archivos JSON.
 - `.minigit/HEAD`: guarda el ID del ultimo commit activo.
 
+## Ignorar archivos
+
+Mini-Git soporta un archivo llamado `.minigitignore`, parecido a `.gitignore`.
+
+Ejemplo:
+
+```text
+*.exe
+*.log
+bin/
+node_modules/
+```
+
+Cuando ejecutas:
+
+```powershell
+minigit add .
+```
+
+Mini-Git no agregara los archivos que coincidan con esas reglas.
+
 ## Flujo interno
 
 Cuando se ejecuta:
@@ -250,6 +281,14 @@ Mini-Git:
 2. Calcula un hash SHA-1.
 3. Guarda el contenido en `.minigit/objects`.
 4. Registra la relacion archivo-hash en `.minigit/index.json`.
+
+Cuando se ejecuta:
+
+```powershell
+minigit diff archivo.txt
+```
+
+Mini-Git compara la version guardada en el index contra el archivo actual del directorio de trabajo.
 
 Cuando se ejecuta:
 
@@ -271,7 +310,9 @@ La demo implementa:
 
 - Inicializacion de repositorio.
 - Agregado de archivos y carpetas.
+- Archivo `.minigitignore`.
 - Commits con mensaje.
+- Diff basico de archivos.
 - Historial de commits.
 - Estado de archivos.
 - Restauracion de commits.
