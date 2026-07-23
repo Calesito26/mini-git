@@ -129,10 +129,18 @@ Crea un archivo de prueba:
 Set-Content archivo.txt "Hola mundo"
 ```
 
+Si el archivo no existe, `minigit add archivo.txt` mostrara error. Primero debes crear el archivo o elegir uno que ya exista en tu proyecto.
+
 Agrega el archivo al index:
 
 ```powershell
 minigit add archivo.txt
+```
+
+Para agregar todos los archivos de la carpeta actual:
+
+```powershell
+minigit add .
 ```
 
 Crea un commit:

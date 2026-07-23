@@ -288,6 +288,9 @@ func checkout(args []string) error {
 func walkFiles(root string, fn func(path string) error) error {
 	info, err := os.Stat(root)
 	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			return fmt.Errorf("no existe: %s", root)
+		}
 		return err
 	}
 	if !info.IsDir() {
