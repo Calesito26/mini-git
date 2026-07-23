@@ -50,6 +50,10 @@ func main() {
 		err = status()
 	case "diff":
 		err = diff(os.Args[2:])
+	case "ls-files":
+		err = lsFiles()
+	case "cat-file":
+		err = catFile(os.Args[2:])
 	case "checkout":
 		err = checkout(os.Args[2:])
 	case "help", "-h", "--help":
@@ -73,6 +77,8 @@ Uso:
   minigit commit -m "mensaje"
   minigit status
   minigit diff [archivo]
+  minigit ls-files
+  minigit cat-file <hash>
   minigit log
   minigit checkout <commit-id>`)
 }
@@ -325,6 +331,59 @@ func diff(args []string) error {
 	}
 	if !changed {
 		fmt.Println("No hay diferencias.")
+	}
+	return nil
+}
+
+func lsFiles() error {
+	if err := ensureRepo(); err != nil {
+		return err
+	}
+	index, err := readIndex()
+	if err != nil {
+		return err
+	}
+	if len(index) == 0 {
+		fmt.Println("No hay archivos en el index.")
+		return nil
+	}
+
+	paths := make([]string, 0, len(index))
+	for path := range index {
+		paths = append(paths, path)
+	}
+	sort.Strings(paths)
+	for _, path := range paths {
+		fmt.Printf("%s  %s\n", index[path], path)
+	}
+	return nil
+}
+
+func catFile(args []string) error {
+	if len(args) != 1 {
+		return errors.New("uso: minigit cat-file <hash>")
+	}
+	if err := ensureRepo(); err != nil {
+		return err
+	}
+	hash := strings.TrimSpace(args[0])
+	if hash == "" {
+		return errors.New("indica el hash del objeto")
+	}
+	if strings.ContainsAny(hash, `/\`) {
+		return errors.New("hash invalido")
+	}
+
+	data, err := os.ReadFile(filepath.Join(objectsDir(), hash))
+	if errors.Is(err, os.ErrNotExist) {
+		return fmt.Errorf("objeto no encontrado: %s", hash)
+	}
+	if err != nil {
+		return err
+	}
+	fmt.Print(string(data))
+	if len(data) > 0 && data[len(data)-1] != '\n' {
+		fmt.Println()
 	}
 	return nil
 }

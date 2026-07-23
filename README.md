@@ -179,6 +179,18 @@ Mira las diferencias antes de volver a agregar el archivo:
 minigit diff archivo.txt
 ```
 
+Lista los archivos agregados al index junto con su hash:
+
+```powershell
+minigit ls-files
+```
+
+Muestra el contenido guardado en un objeto usando un hash de `ls-files`:
+
+```powershell
+minigit cat-file <hash>
+```
+
 Guarda una nueva version:
 
 ```powershell
@@ -200,6 +212,8 @@ minigit add <archivo|carpeta> [...]
 minigit commit -m "mensaje"
 minigit status
 minigit diff [archivo]
+minigit ls-files
+minigit cat-file <hash>
 minigit log
 minigit checkout <commit-id>
 ```
@@ -293,6 +307,22 @@ Mini-Git compara la version guardada en el index contra el archivo actual del di
 Cuando se ejecuta:
 
 ```powershell
+minigit ls-files
+```
+
+Mini-Git muestra los archivos registrados en `.minigit/index.json` junto con el hash del objeto guardado.
+
+Cuando se ejecuta:
+
+```powershell
+minigit cat-file <hash>
+```
+
+Mini-Git busca ese hash dentro de `.minigit/objects` y muestra el contenido guardado.
+
+Cuando se ejecuta:
+
+```powershell
 minigit commit -m "mensaje"
 ```
 
@@ -313,6 +343,8 @@ La demo implementa:
 - Archivo `.minigitignore`.
 - Commits con mensaje.
 - Diff basico de archivos.
+- Listado de archivos del index con `ls-files`.
+- Lectura de objetos con `cat-file`.
 - Historial de commits.
 - Estado de archivos.
 - Restauracion de commits.
