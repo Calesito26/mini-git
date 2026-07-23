@@ -42,7 +42,25 @@ Verifica que el proyecto compile:
 go test ./...
 ```
 
-Compila el ejecutable:
+## Instalacion recomendada en Windows
+
+Para no escribir rutas largas ni depender de `.\minigit.exe`, instala el comando en tu usuario:
+
+```powershell
+.\scripts\install-windows.ps1
+```
+
+Luego abre una terminal nueva y verifica:
+
+```powershell
+minigit help
+```
+
+Desde ese momento puedes usar `minigit` en cualquier carpeta.
+
+## Compilar manualmente
+
+Si no quieres instalarlo, puedes compilar el ejecutable dentro del proyecto:
 
 ```powershell
 go build -o minigit.exe ./cmd/minigit
@@ -56,7 +74,13 @@ go build -o minigit ./cmd/minigit
 
 ## Como ejecutarlo
 
-Hay dos formas.
+Hay tres formas.
+
+Instalado como comando global:
+
+```powershell
+minigit help
+```
 
 Con Go directamente:
 
@@ -70,12 +94,33 @@ Con el ejecutable compilado:
 .\minigit.exe help
 ```
 
+Recomendacion: para trabajar mas simple, usa la instalacion global y ejecuta `minigit` desde la carpeta del proyecto que quieras versionar.
+
+## Donde se crea el repositorio
+
+Mini-Git siempre trabaja sobre la carpeta actual de la terminal.
+
+Ejemplo:
+
+```powershell
+cd "D:\mis-proyectos\proyecto-demo"
+minigit init
+```
+
+Eso crea:
+
+```text
+D:\mis-proyectos\proyecto-demo\.minigit
+```
+
+No importa donde este instalado el programa. Lo importante es la carpeta donde estas parado cuando ejecutas el comando.
+
 ## Demo rapida
 
 Inicializa Mini-Git en la carpeta actual:
 
 ```powershell
-.\minigit.exe init
+minigit init
 ```
 
 Crea un archivo de prueba:
@@ -87,25 +132,25 @@ Set-Content archivo.txt "Hola mundo"
 Agrega el archivo al index:
 
 ```powershell
-.\minigit.exe add archivo.txt
+minigit add archivo.txt
 ```
 
 Crea un commit:
 
 ```powershell
-.\minigit.exe commit -m "primer commit"
+minigit commit -m "primer commit"
 ```
 
 Consulta el estado:
 
 ```powershell
-.\minigit.exe status
+minigit status
 ```
 
 Consulta el historial:
 
 ```powershell
-.\minigit.exe log
+minigit log
 ```
 
 Modifica el archivo:
@@ -117,20 +162,20 @@ Set-Content archivo.txt "Hola mundo modificado"
 Revisa los cambios:
 
 ```powershell
-.\minigit.exe status
+minigit status
 ```
 
 Guarda una nueva version:
 
 ```powershell
-.\minigit.exe add archivo.txt
-.\minigit.exe commit -m "actualice archivo"
+minigit add archivo.txt
+minigit commit -m "actualice archivo"
 ```
 
 Restaura una version anterior usando el ID que aparece en `log`:
 
 ```powershell
-.\minigit.exe checkout <commit-id>
+minigit checkout <commit-id>
 ```
 
 ## Comandos disponibles
@@ -188,7 +233,7 @@ Significado:
 Cuando se ejecuta:
 
 ```powershell
-.\minigit.exe add archivo.txt
+minigit add archivo.txt
 ```
 
 Mini-Git:
@@ -201,7 +246,7 @@ Mini-Git:
 Cuando se ejecuta:
 
 ```powershell
-.\minigit.exe commit -m "mensaje"
+minigit commit -m "mensaje"
 ```
 
 Mini-Git:
